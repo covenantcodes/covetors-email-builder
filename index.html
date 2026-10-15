@@ -1,0 +1,419 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Covetors Email Builder</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
+<style>
+/* Layout: two panes — write on the left, live branded preview on the right; stacks on phones */
+:root {
+  --bg: #F3F6FA;
+  --surface: #FFFFFF;
+  --fg: #1E2A3A;
+  --muted: #5D6B7E;
+  --line: #D9E1EC;
+  --navy: #14345E;
+  --orange: #F4811F;
+  --orange-ink: #B85A0A;
+  --field: #FFFFFF;
+  --ok: #1F7A4D;
+  --font-display: "Fredoka", "Trebuchet MS", Verdana, sans-serif;
+  --font-body: "Nunito Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1726; --surface: #16233A; --fg: #E6ECF5; --muted: #9AA8BC; --line: #2A3A55;
+    --navy: #8FB4E8; --orange: #F79A45; --orange-ink: #F79A45; --field: #0F1A2C; --ok: #5FC896;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1726; --surface: #16233A; --fg: #E6ECF5; --muted: #9AA8BC; --line: #2A3A55;
+  --navy: #8FB4E8; --orange: #F79A45; --orange-ink: #F79A45; --field: #0F1A2C; --ok: #5FC896;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+}
+.wrap {
+  max-width: 1280px; margin: 0 auto;
+  padding-block: 28px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+header.top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 22px; }
+h1 { font-family: var(--font-display); font-weight: 600; font-size: 1.75rem; margin: 0; color: var(--navy); text-wrap: balance; }
+h1 span { color: var(--orange); }
+.sub { color: var(--muted); margin: 4px 0 0; max-width: 60ch; }
+.grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 24px; align-items: start; }
+@media (max-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.pane { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; min-width: 0; }
+.pane h2 { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; color: var(--navy); margin: 0 0 12px; }
+label { display: block; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+textarea, input[type="text"], input[type="url"] {
+  width: 100%; font: inherit; color: var(--fg); background: var(--field);
+  border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
+}
+textarea#emailText { min-height: 360px; resize: vertical; line-height: 1.55; }
+textarea:focus, input:focus, button:focus-visible, summary:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.stack { display: flex; flex-direction: column; gap: 16px; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 480px) { .row2 { grid-template-columns: 1fr; } }
+.check { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.95rem; text-transform: none; letter-spacing: 0; color: var(--fg); margin: 0; cursor: pointer; }
+.check input { width: 18px; height: 18px; accent-color: var(--orange); }
+.tips { font-size: 0.88rem; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 14px; }
+.tips ul { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 4px; }
+code { font-family: var(--font-mono); font-size: 0.85em; background: var(--bg); border: 1px solid var(--line); border-radius: 5px; padding: 0 5px; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+button {
+  font-family: var(--font-display); font-weight: 600; font-size: 0.98rem; cursor: pointer;
+  border-radius: 999px; padding: 10px 20px; border: 1.5px solid var(--navy); background: transparent; color: var(--navy);
+}
+button.primary { background: #F4811F; border-color: #F4811F; color: #FFFFFF; }
+button:hover { filter: brightness(1.05); }
+.status { font-size: 0.9rem; color: var(--ok); font-weight: 600; min-height: 1.4em; }
+.status.err { color: var(--orange-ink); }
+.preview-shell { background: #F3F6FA; border-radius: 12px; overflow-x: auto; border: 1px solid var(--line); }
+#preview { min-width: 0; }
+details { margin-top: 14px; }
+summary { cursor: pointer; font-weight: 700; color: var(--navy); }
+#codeOut { margin-top: 10px; min-height: 180px; font-family: var(--font-mono); font-size: 12px; }
+.example-tag { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--orange-ink); border: 1px solid var(--orange); border-radius: 999px; padding: 1px 8px; margin-left: 8px; vertical-align: middle; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Covetors <span>Email Builder</span></h1>
+      <p class="sub">Paste a plain email. It comes out in the Covetors template, ready to copy into Gmail.</p>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section class="pane stack" aria-label="Write">
+      <div>
+        <label for="emailText">Your email <span class="example-tag" id="exampleTag">Example</span></label>
+        <textarea id="emailText" spellcheck="true"></textarea>
+      </div>
+
+      <div class="row2">
+        <div>
+          <label for="titleLine">Title under your name</label>
+          <input type="text" id="titleLine" value="Founder &amp; Director, Covetors">
+        </div>
+        <div>
+          <label for="preheader">Inbox preview text</label>
+          <input type="text" id="preheader" placeholder="Auto: first line of the message">
+        </div>
+      </div>
+
+      <div class="stack" style="gap:10px">
+        <label class="check" for="ctaOn"><input type="checkbox" id="ctaOn"> Add an orange button</label>
+        <div class="row2" id="ctaFields" hidden>
+          <div>
+            <label for="ctaLabel">Button text</label>
+            <input type="text" id="ctaLabel" value="See our classes">
+          </div>
+          <div>
+            <label for="ctaUrl">Button link</label>
+            <input type="url" id="ctaUrl" value="https://www.covetors.co.uk/courses">
+          </div>
+        </div>
+      </div>
+
+      <div class="tips">
+        <strong>Formatting</strong>
+        <ul>
+          <li>Leave a blank line between paragraphs. Lines with no blank line between them stay together.</li>
+          <li>A block of <code>Label: details</code> lines, or one that starts with a <code>**bold title**</code>, becomes a details card. Good for meeting info.</li>
+          <li>Start a line with <code>&gt;</code> to put it in the highlighted blue panel.</li>
+          <li>Wrap words in <code>**double stars**</code> to make them bold.</li>
+          <li>Web addresses and email addresses become links automatically.</li>
+          <li>Your sign-off (Best regards, Kind regards, Thanks…) and the name under it become the signature.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="pane" aria-label="Preview">
+      <div class="actions">
+        <button class="primary" id="copyRich" type="button">Copy for Gmail</button>
+        <button id="copyCode" type="button">Copy HTML code</button>
+        <span class="status" id="status" role="status" aria-live="polite"></span>
+      </div>
+      <div class="preview-shell"><div id="preview"></div></div>
+      <details>
+        <summary>Show HTML code</summary>
+        <textarea id="codeOut" readonly></textarea>
+      </details>
+    </section>
+  </div>
+</div>
+
+<script>
+(function () {
+  var SAMPLE = [
+    "Hi Ada,",
+    "",
+    "Thank you for coming to our free trial class on Saturday. Tolu had a great time building her first web page.",
+    "",
+    "**Next term**",
+    "Starts: Monday 2 November",
+    "Classes: Tuesdays and Thursdays, 5–6pm (WAT)",
+    "Ages: 8–12",
+    "",
+    "If you'd like to secure a place, reply to this email or visit covetors.co.uk/courses.",
+    "",
+    "Best regards,",
+    "Covenant Popoola"
+  ].join("\n");
+
+  var LOGO = "https://www.covetors.co.uk/assets/logo%20long.png";
+  var FONT = "Fredoka, 'Trebuchet MS', Verdana, sans-serif";
+  var TEXT = "color: rgb(64, 71, 79);";
+  var NAVY = "rgb(20, 52, 94)";
+  var CLOSING = /^(best|kind|warm|warmest)?\s*(regards|wishes)\b|^(many\s+)?thanks\b|^thank\s+you[,!.]?$|^sincerely\b|^yours\s+(sincerely|faithfully|truly)\b|^cheers\b|^best[,!.]?$|^with\s+(thanks|gratitude)\b/i;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var els = {
+    text: $("emailText"), title: $("titleLine"), pre: $("preheader"),
+    ctaOn: $("ctaOn"), ctaFields: $("ctaFields"), ctaLabel: $("ctaLabel"), ctaUrl: $("ctaUrl"),
+    preview: $("preview"), code: $("codeOut"), status: $("status"), tag: $("exampleTag")
+  };
+
+  function esc(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function escAttr(s) { return esc(s); }
+
+  var LINK_RE = /([\w.+-]+@[\w-]+(?:\.[\w-]+)+)|(https?:\/\/[^\s<]+|(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:co\.uk|org\.uk|ac\.uk|com\.ng|com|org|net|io|ng|uk|dev|app|co)(?:\/[^\s<]*)?)/gi;
+
+  function linkify(s) {
+    return s.replace(LINK_RE, function (m, email, url) {
+      var trail = "";
+      var core = m;
+      while (/[.,;:!?)]$/.test(core)) { trail = core.slice(-1) + trail; core = core.slice(0, -1); }
+      var href = email ? "mailto:" + core : (/^https?:\/\//i.test(core) ? core : "https://" + core);
+      var shown = email ? core : core.replace(/^https?:\/\//i, "");
+      return '<a href="' + href + '" style="color: ' + NAVY + '; font-weight: 600; text-decoration: none; word-break: break-all;" target="_blank">' + shown + "</a>" + trail;
+    });
+  }
+  function inline(s) {
+    var out = linkify(esc(s));
+    out = out.replace(/\*\*(.+?)\*\*/g, '<strong style="color: ' + NAVY + ';">$1</strong>');
+    return out;
+  }
+
+  function parse(raw) {
+    var all = raw.replace(/\r/g, "").split("\n").map(function (l) { return l.trim(); });
+    var closeIdx = -1;
+    for (var i = all.length - 1; i >= 0; i--) {
+      if (all[i] && CLOSING.test(all[i]) && all[i].length < 40) { closeIdx = i; break; }
+    }
+    var bodyLines = closeIdx >= 0 ? all.slice(0, closeIdx) : all;
+    var closing = closeIdx >= 0 ? all[closeIdx] : "";
+    var after = closeIdx >= 0 ? all.slice(closeIdx + 1).filter(Boolean) : [];
+
+    // Blank lines separate paragraphs. If the email has no blank lines at all, each line is its own paragraph.
+    var groups = [];
+    var hasBlank = /\S\s*\n\s*\n\s*\S/.test(bodyLines.join("\n"));
+    if (hasBlank) {
+      var cur = [];
+      bodyLines.forEach(function (l) {
+        if (l) cur.push(l); else if (cur.length) { groups.push(cur); cur = []; }
+      });
+      if (cur.length) groups.push(cur);
+    } else {
+      groups = bodyLines.filter(Boolean).map(function (l) { return [l]; });
+    }
+    return { groups: groups, closing: closing, name: after[0] || "", extra: after.slice(1) };
+  }
+
+  function isDetails(g) {
+    if (g.length < 2) return false;
+    var labelled = g.filter(function (l) { return /^[^:]{1,30}:\s+\S/.test(l) && !/^https?:/i.test(l); }).length;
+    return /^\*\*.+\*\*$/.test(g[0]) || labelled >= 2;
+  }
+  function detailsHtml(g) {
+    var out = [];
+    g.forEach(function (l, i) {
+      if (i === 0 && /^\*\*.+\*\*$/.test(l)) {
+        out.push('<div style="font-size: 16px; font-weight: 700; color: ' + NAVY + '; padding-bottom: 6px;">' + inline(l.replace(/^\*\*|\*\*$/g, "")) + "</div>");
+        return;
+      }
+      var m = l.match(/^([^:]{1,30}):\s+(.+)$/);
+      if (m && !/^https?$/i.test(m[1])) {
+        out.push('<div style="padding: 3px 0;"><span style="color: rgb(123, 150, 188); font-weight: 600;">' + esc(m[1]) + ':</span> ' + inline(m[2]) + "</div>");
+      } else {
+        out.push('<div style="padding: 3px 0;">' + inline(l) + "</div>");
+      }
+    });
+    return out.join("");
+  }
+
+  function blockText(paras) {
+    return '<tr><td style="padding: 0 32px 8px; font-family: ' + FONT + '; font-size: 15px; line-height: 25px; ' + TEXT + '">' +
+      paras.map(function (p) { return '<p style="margin: 0 0 16px 0;">' + p + "</p>"; }).join("") + "</td></tr>";
+  }
+  function blockPanel(p) {
+    return '<tr><td style="padding: 4px 32px 20px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; background-color: rgb(243, 246, 250); border-radius: 12px;" bgcolor="#F3F6FA"><tbody><tr>' +
+      '<td style="padding: 16px 20px; border-left: 4px solid rgb(244, 129, 31); font-family: ' + FONT + '; font-size: 15px; line-height: 24px; ' + TEXT + '">' + p + "</td></tr></tbody></table></td></tr>";
+  }
+
+  function build() {
+    var raw = els.text.value;
+    var p = parse(raw);
+    var rows = [];
+    var buf = [];
+    var firstPlain = "";
+    var flush = function () { if (buf.length) { rows.push(blockText(buf)); buf = []; } };
+    p.groups.forEach(function (g, i) {
+      if (g[0].charAt(0) === ">") {
+        flush();
+        rows.push(blockPanel(g.map(function (l) { return inline(l.replace(/^>\s*/, "")); }).join("<br>")));
+      } else if (isDetails(g)) {
+        flush();
+        rows.push(blockPanel(detailsHtml(g)));
+      } else {
+        if (!firstPlain && i > 0) firstPlain = g.join(" ");
+        buf.push(g.map(inline).join("<br>"));
+      }
+    });
+    flush();
+
+    var firstGroup = p.groups[0] ? p.groups[0].join(" ") : "";
+    var preText = els.pre.value.trim() || (firstPlain || firstGroup).replace(/\*\*/g, "").replace(/^>\s*/, "");
+    if (preText.length > 110) preText = preText.slice(0, 107).replace(/\s+\S*$/, "") + "…";
+
+    var cta = "";
+    if (els.ctaOn.checked && els.ctaLabel.value.trim()) {
+      var url = els.ctaUrl.value.trim() || "https://www.covetors.co.uk";
+      if (!/^(https?:|mailto:)/i.test(url)) url = "https://" + url;
+      cta = '<tr><td align="center" style="padding: 10px 32px 6px"><table cellpadding="0" cellspacing="0" style="border-collapse: collapse"><tbody><tr>' +
+        '<td align="center" style="border-radius: 999px; background-color: rgb(244, 129, 31);" bgcolor="#F4811F">' +
+        '<a href="' + escAttr(url) + '" style="display: block; padding: 14px 34px; font-family: ' + FONT + '; font-size: 16px; font-weight: 700; line-height: 20px; text-decoration: none; color: rgb(255, 255, 255); white-space: nowrap;" target="_blank">' + esc(els.ctaLabel.value.trim()) + "</a>" +
+        "</td></tr></tbody></table></td></tr>";
+    }
+
+    var sig = "";
+    if (p.closing || p.name) {
+      var titleLines = p.extra.length ? p.extra : (els.title.value.trim() ? [els.title.value.trim()] : []);
+      sig = '<tr><td style="padding: 18px 32px 34px; font-family: ' + FONT + '; font-size: 15px; line-height: 25px; ' + TEXT + '">' +
+        (p.closing ? '<p style="margin: 0 0 6px 0;">' + esc(p.closing) + "</p>" : "") +
+        (p.name ? '<p style="margin: 0; font-size: 16px; font-weight: 600; color: ' + NAVY + ';">' + esc(p.name) + "</p>" : "") +
+        titleLines.map(function (t) { return '<p style="margin: 0; font-size: 14px; color: rgb(123, 150, 188);">' + inline(t) + "</p>"; }).join("") +
+        "</td></tr>";
+    } else {
+      sig = '<tr><td style="padding: 0 0 26px;"></td></tr>';
+    }
+
+    var html =
+'<div style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt">' +
+'<div style="display: none; font-size: 1px; line-height: 1px; max-height: 0px; opacity: 0; color: rgb(243, 246, 250);"><span style="overflow: hidden;">' + esc(preText) + '</span></div>' +
+'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; background-color: rgb(243, 246, 250);" bgcolor="#F3F6FA"><tbody><tr><td align="center" style="padding: 28px 12px">' +
+'<table width="600" cellpadding="0" cellspacing="0" style="width: 600px; max-width: 600px; border-radius: 16px; overflow: hidden; border-collapse: collapse; background-color: rgb(255, 255, 255);" bgcolor="#FFFFFF"><tbody>' +
+'<tr><td align="center" style="padding: 26px 32px 20px; background-color: rgb(255, 255, 255);"><a href="https://www.covetors.co.uk" style="text-decoration: none;" target="_blank"><img src="' + LOGO + '" alt="Covetors Kids Coding School" width="210" style="outline: none; text-decoration: none; display: block; width: 210px; max-width: 70%; height: auto; border: 0;"></a></td></tr>' +
+'<tr><td style="height: 4px; line-height: 4px; font-size: 4px; background-color: rgb(244, 129, 31);" bgcolor="#F4811F">&nbsp;</td></tr>' +
+'<tr><td style="height: 30px; line-height: 30px; font-size: 1px;">&nbsp;</td></tr>' +
+rows.join("") + cta + sig +
+'<tr><td align="center" style="padding: 22px 32px 24px; background-color: rgb(20, 52, 94);" bgcolor="#14345E">' +
+'<div style="font-family: ' + FONT + '; font-size: 13px; line-height: 20px; color: rgb(255, 255, 255);"><a href="mailto:hello@covetors.co.uk" style="text-decoration: none; color: rgb(255, 255, 255);" target="_blank">hello@covetors.co.uk</a>&nbsp;•&nbsp;<a href="https://covetors.co.uk" style="text-decoration: none; color: rgb(255, 255, 255);" target="_blank">covetors.co.uk</a></div>' +
+'<div style="font-family: ' + FONT + '; font-size: 11px; line-height: 18px; padding-top: 10px; color: rgb(123, 150, 188);">Covetors Kids Coding School</div>' +
+'</td></tr></tbody></table></td></tr></tbody></table></div>';
+
+    els.preview.innerHTML = html;
+    els.code.value = html;
+    return html;
+  }
+
+  function save() {
+    try {
+      localStorage.setItem("covetorsEmailDraft", JSON.stringify({
+        text: els.text.value, title: els.title.value, pre: els.pre.value,
+        ctaOn: els.ctaOn.checked, ctaLabel: els.ctaLabel.value, ctaUrl: els.ctaUrl.value
+      }));
+    } catch (e) {}
+  }
+  function load() {
+    try {
+      var d = JSON.parse(localStorage.getItem("covetorsEmailDraft") || "null");
+      if (d && typeof d.text === "string") {
+        els.text.value = d.text; els.title.value = d.title || ""; els.pre.value = d.pre || "";
+        els.ctaOn.checked = !!d.ctaOn; els.ctaLabel.value = d.ctaLabel || els.ctaLabel.value; els.ctaUrl.value = d.ctaUrl || els.ctaUrl.value;
+        return true;
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  function sync() {
+    els.ctaFields.hidden = !els.ctaOn.checked;
+    els.tag.hidden = els.text.value !== SAMPLE;
+    build();
+    save();
+  }
+
+  var statusTimer;
+  function say(msg, err) {
+    els.status.textContent = msg;
+    els.status.className = "status" + (err ? " err" : "");
+    clearTimeout(statusTimer);
+    statusTimer = setTimeout(function () { els.status.textContent = ""; }, 4000);
+  }
+
+  function selectPreviewAndCopy() {
+    var sel = window.getSelection();
+    var range = document.createRange();
+    range.selectNodeContents(els.preview);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) {}
+    sel.removeAllRanges();
+    return ok;
+  }
+
+  $("copyRich").addEventListener("click", function () {
+    var html = build();
+    var plain = els.preview.innerText;
+    if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+      navigator.clipboard.write([new ClipboardItem({
+        "text/html": new Blob([html], { type: "text/html" }),
+        "text/plain": new Blob([plain], { type: "text/plain" })
+      })]).then(function () {
+        say("Copied. Paste into a new Gmail message.");
+      }).catch(function () {
+        if (selectPreviewAndCopy()) say("Copied. Paste into a new Gmail message.");
+        else say("Couldn't copy here. Select the preview with your mouse and press Ctrl/Cmd+C.", true);
+      });
+    } else if (selectPreviewAndCopy()) {
+      say("Copied. Paste into a new Gmail message.");
+    } else {
+      say("Couldn't copy here. Select the preview with your mouse and press Ctrl/Cmd+C.", true);
+    }
+  });
+
+  $("copyCode").addEventListener("click", function () {
+    var html = build();
+    var fallback = function () {
+      var d = els.code.closest("details"); if (d) d.open = true;
+      els.code.focus(); els.code.select();
+      var ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
+      say(ok ? "HTML code copied." : "Code is selected below. Press Ctrl/Cmd+C to copy.", !ok);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(html).then(function () { say("HTML code copied."); }).catch(fallback);
+    } else { fallback(); }
+  });
+
+  [els.text, els.title, els.pre, els.ctaLabel, els.ctaUrl].forEach(function (el) { el.addEventListener("input", sync); });
+  els.ctaOn.addEventListener("change", sync);
+
+  if (!load()) els.text.value = SAMPLE;
+  sync();
+})();
+</script>
+
+</body></html>
